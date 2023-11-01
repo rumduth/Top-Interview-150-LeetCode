@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int jump(vector<int>& nums) {
+        if(nums.size() == 1)
+           return 0;
+        int count = 0;
+        int last_index = nums.size() - 1;
+        int current_max_jump = nums[0];
+        int possible_max_jump = nums[0];
+        if(current_max_jump >= last_index)
+            return 1;
+        count = 1;
+        for(int i = 1; i<nums.size(); i++)
+        {
+            possible_max_jump = max(possible_max_jump, i + nums[i]);
+            if(i == current_max_jump)
+            {
+            count++;
+            current_max_jump = possible_max_jump;
+            if(current_max_jump >= last_index)
+                return count;
+            }
+        }
+        return count;
+  
+    }
+};
+
+Time Complexity: O(N)
+Space Complexity: O(1)
