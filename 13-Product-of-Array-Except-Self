@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> dp(n);
+        int left = 1;
+        dp[0] = 1;
+        for(int i = 1; i<n; i++)
+        {
+            dp[i] = left * nums[i-1];
+            left *= nums[i-1];
+        }
+        int right = nums[n-1];
+        for(int i = n - 2; i>=0; i--)
+        {
+            dp[i] = dp[i]*right;
+            right *= nums[i];
+        }
+        return dp;
+    }
+};
+
+Time Complexity: O(N)
+Space Complexity: O(1)
