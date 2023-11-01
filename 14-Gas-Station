@@ -1,0 +1,40 @@
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int sum_gas = 0;
+        int sum_cost = 0;
+        for(int i = 0; i<gas.size(); i++)
+        {
+            sum_gas += gas[i];
+            sum_cost += cost[i];
+        }
+        if(sum_gas < sum_cost)
+            return -1;
+        
+        int ans = -1;
+        int sum = 0;
+        bool found = false;
+        for(int i = 0; i<gas.size(); i++)
+        {
+            if(sum + gas[i] - cost[i] >= 0)
+            {
+                sum += gas[i] - cost[i];
+                if(!found)
+                {
+                    ans = i;
+                    found = true;
+                }
+            }
+            else
+            {
+                sum = 0;
+                ans = -1;
+                found = false;
+            }
+        }
+        return ans;
+    }
+};
+
+Time Complexity: O(N)
+Space Complexity: O(1)
