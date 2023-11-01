@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int trap(vector<int>& h) {
+        int n = h.size();
+        vector<int> left(n);
+        vector<int> right(n);
+        int max_left = h[0];
+        for(int i = 1; i<n; i++)
+        {
+            max_left = max(max_left,h[i]);
+            left[i] = max_left;
+        }
+        int right_left = h[n-1];
+        int max_right = h[n-1];
+        for(int i = n-2; i>=0; i--)
+        {
+            max_right = max(max_right,h[i]);
+            right[i] = max_right;
+        }
+        int ans = 0;
+        for(int i = 1; i<=n-2; i++)
+        {
+            ans += min(right[i],left[i]) - h[i];
+        }
+        return ans;
+    }
+};
+
+Time Complexity: O(N)
+Space Complexity: O(N)
+
+Note:: At one column, checking the max_column on the left and right of it. 
