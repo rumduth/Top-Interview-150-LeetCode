@@ -1,0 +1,47 @@
+class Solution {
+public:
+    int hIndex(vector<int>& c) {
+        sort(c.begin(),c.end());
+        int h = 1;
+        for(int i = c.size() - 1; i>= 0; i--)
+        {
+            if(c[i] >= h)
+                h++;
+            else
+                break;
+        }
+        return h-1;
+    }
+};
+
+
+class Solution {
+public:
+    int hIndex(vector<int>& c) {
+        sort(c.begin(),c.end());
+        int i = 0;
+        int j = c.size() - 1;
+        int h = 0;
+        int e = c.size() - 1;
+        while(i <= j)
+        {
+            int m = (i+j) / 2;
+            int number_papers = e - m + 1;
+            int cite = c[m];
+            if(cite >= number_papers)
+            {
+                h = e - m + 1;
+                j = m - 1;
+            }
+            else
+            {
+               i = m + 1;
+            }
+        }
+        return h;
+    }
+};
+
+
+Time Complexity: O(NlogN)
+Space Complexity: O(1)
