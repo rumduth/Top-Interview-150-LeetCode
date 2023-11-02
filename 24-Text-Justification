@@ -1,1 +1,109 @@
+class Solution {
+public:
+    void helper(vector<string>& ans, vector<string>& a, int maxWidth)
+    {
+        int sum = 0;
+        for(auto& i : a)
+            sum += i.length();
+        if(a.size() == 1)
+        {
+            string b = "";
+            b += a[0];
+            while(b.size() != maxWidth)
+                b.push_back(' ');
+            ans.push_back(b);
+            return;
+        }
+        int number_spaces = (maxWidth - sum) / (a.size()-1);
+        int offset = (maxWidth - sum) % (a.size() - 1);
+        if(offset == 0)
+        {
+            string space = "";
+            for(int i = 0; i<number_spaces; i++)
+                space.push_back(' ');
+            string b = "";
+            for(int i = 0; i<a.size(); i++)
+            {
+                if(i == a.size() - 1)
+                    b += a[i];
+                else
+                    b += a[i] + space;
+            }
+            ans.push_back(b);
+        }
+        else
+        {
+            string space = "";
+            for(int i = 0; i<number_spaces; i++)
+                space.push_back(' ');
+            string b= "";
+            for(int i = 0; i<a.size();i++)
+            {
+                if(i == a.size()-1)
+                    b += a[i];
+                else
+                {
+                    if(offset == 0)
+                        b += a[i] + space;
+                    else
+                    {
+                        b += a[i] + space + ' ';
+                        offset--;
+                    }
+                }
+            }
+            ans.push_back(b);
+        }
+    }
 
+    void helperLastString(vector<string>& ans, vector<string>& a, int maxWidth)
+    {
+        string b = "";
+        for(int i = 0; i<a.size(); i++)
+        {
+            if(i == a.size()-1)
+                b += a[i];
+            else
+                b += a[i] + ' ';
+        }
+        while(b.size() != maxWidth)
+            b.push_back(' ');
+        ans.push_back(b);
+    }
+    vector<string> fullJustify(vector<string>& words, int maxWidth) {
+        vector<vector<string>> w;
+        int l;
+        vector<string> v;
+        int sum = 0;
+        for(int i = 0; i<words.size(); i++)
+        {
+            sum += words[i].size();
+            int number_words = v.size();
+            if(sum + number_words - 1 + 1 <= maxWidth)
+            {
+                v.push_back(words[i]);
+            }
+            else
+            {
+                w.push_back(v);
+                sum = words[i].size();
+                v = {};
+                v.push_back(words[i]);
+            }
+            if(i == words.size() - 1)
+                w.push_back(v);
+        }
+        vector<string> ans;
+        for(int i = 0; i<w.size() - 1; i++)
+            helper(ans,w[i],maxWidth);
+        
+        //Processing last vector<string>
+        helperLastString(ans,w[w.size()-1],maxWidth);
+        
+
+        return ans;
+    }
+};
+
+Time Complexity: O(N)
+Space Complexity: O(N)
