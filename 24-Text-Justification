@@ -105,5 +105,5 @@ public:
     }
 };
 
-Time Complexity: O(N)
+Time Complexity: O(N*MAX_WORD_LENGTH)
 Space Complexity: O(N)
