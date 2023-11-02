@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        if(needle.size() > haystack.size())
+            return -1;
+        if(needle == haystack)
+            return 0;
+        int ans = -1;
+        for(int j = 0; j <= haystack.size() - needle.size(); j++)
+        {
+            if(haystack[j] == needle[0])
+            {
+                bool accept = true;
+                for(int i = 0; i<needle.size(); i++)
+                {
+                    if(haystack[j+i] != needle[i])
+                    {
+                        accept = false;
+                        break;
+                    }
+                }
+                if(accept)
+                    return j;
+            }
+        }
+        return ans;
+    }
+};
+
+Time Complexity: O(M*N)
+Space Complexity: O(1)
