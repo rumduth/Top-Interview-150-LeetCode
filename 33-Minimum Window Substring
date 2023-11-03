@@ -1,0 +1,73 @@
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        int a = s.size();
+        int b = t.size();
+        if(b > a)
+            return "";
+        unordered_map<char, int> m; //getting frequency
+        int max_count = 0;
+        for(auto& i : t)
+        {
+            if(!m.count(i))
+                max_count++;
+            m[i]++;
+        }
+        int count = 0;
+        int start = 0;
+        string ans = "";
+        unordered_map<char,int> m2;
+        for(int i = 0; i<s.size(); i++)
+        {
+            if(m.count(s[i]))
+            {
+                m2[s[i]]++;
+                if(m2[s[i]] == m[s[i]])
+                    count++;
+                if(count == max_count)
+                {
+                    while(!m.count(s[start]) || (m.count(s[start]) && m[s[start]] < m2[s[start]]))
+                    {
+                        if(!m.count(s[start]))
+                            start++;
+                        else 
+                        {
+                            m2[s[start]]--;
+                            start++;
+                        }
+                    }
+                    
+                    if(ans == "")
+                        ans = s.substr(start,i-start+1);
+                    else
+                    {
+                        if(ans.size() > i-start + 1)
+                            ans = s.substr(start,i-start+1);
+                    }
+                }
+            }
+        }
+
+    return ans;
+
+    }
+};
+
+Time Complexity: O(N)
+Space Complexity: O(N)
+
+/*
+while(!m.count(s[start]) && count == max_count)
+                    {
+                        if(m.count(s[start]))
+                        {
+                            m2[s[start]]--;
+                            if(m2[s[start]] < m[s[start]])
+                            {
+                                count--;
+                                start++;
+                                break;
+                            }
+                        }
+                        start++;
+*/
