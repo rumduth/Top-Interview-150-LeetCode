@@ -1,0 +1,27 @@
+class Solution {
+public:
+    bool isHappy(int n) {
+        unordered_map<int, bool> m;
+        int sum = 0;
+        while(n != 1)
+        {
+            while(n > 0)
+            {
+                sum += (n%10) * (n%10);
+                n = n/10;
+            }
+            if(m.count(sum))
+                return false;
+            else
+            {
+                m[sum] = true;
+                n = sum;
+                sum = 0;
+            }
+        }
+        return true;
+    }
+};
+
+Time Complexity: O(N)
+Space Complexity: O(N)
