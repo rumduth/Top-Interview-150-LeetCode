@@ -1,0 +1,39 @@
+class Solution {
+public:
+    bool wordPattern(string pattern, string s) {
+        stringstream ss(s);
+        vector<string> v;
+        string s1;
+        while(getline(ss,s1,' '))
+            v.push_back(s1);
+ 
+        if(v.size() != pattern.size())
+            return false;
+        unordered_map<string, char> m1;
+        unordered_map<char, string> m2;
+        
+        for(int i = 0; i < v.size(); i++)
+        {
+            if(!m1.count(v[i]))
+                m1[v[i]] = pattern[i];
+            else
+            {
+                if(m1[v[i]] != pattern[i])
+                    return false;
+            }
+            
+            if(!m2.count(pattern[i]))
+                m2[pattern[i]] = v[i];
+            else
+            {
+                if(m2[pattern[i]] != v[i])
+                    return false;
+            }
+        }
+        return true;
+        
+    }
+};
+
+Time Complexity: O(N)
+Space Complexity: O(N)
