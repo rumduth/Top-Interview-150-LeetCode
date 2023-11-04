@@ -1,0 +1,57 @@
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        int first_i = 0;
+        int last_i = matrix.size() - 1;
+        int first_j = 0;
+        int last_j = matrix[0].size() - 1;
+
+        vector<int> ans;
+        while(first_i < last_i && first_j < last_j)
+        {
+            for(int j = first_j; j <= last_j; j++)
+                ans.push_back(matrix[first_i][j]);
+            first_i++;
+
+            for(int i = first_i; i<=last_i; i++)
+                ans.push_back(matrix[i][last_j]);
+            last_j--;
+
+            for(int j = last_j; j >= first_j; j--)
+                ans.push_back(matrix[last_i][j]);
+            last_i--;
+
+            for(int i = last_i; i >= first_i; i--)
+                ans.push_back(matrix[i][first_j]);
+            first_j++;
+        }
+        if(first_i == last_i && first_j == last_j)
+        {
+            ans.push_back(matrix[first_i][first_j]);
+            return ans;
+        }
+        else if(first_i == last_i)
+        {
+            while(first_j <= last_j)
+            {
+                ans.push_back(matrix[first_i][first_j]);
+                first_j++;
+            }
+            return ans;
+        }
+        else if(first_j == last_j)
+        {
+            while(first_i <= last_i)
+            {
+                ans.push_back(matrix[first_i][first_j]);
+                first_i++;
+            }
+            return ans;
+        }
+        else
+            return ans;
+    }
+};
+
+Time Complexity: O(N)
+Space Complexity: O(1)
