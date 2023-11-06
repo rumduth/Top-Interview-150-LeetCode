@@ -1,0 +1,64 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+        if(head == NULL || head->next == NULL)
+            return head;
+
+        ListNode* lesser = NULL;
+        ListNode* a = NULL;
+        ListNode* greater = NULL;
+        ListNode* b = NULL;
+
+        ListNode* h = head;
+        while(h != NULL)
+        {
+            if(h->val < x)
+            {
+                if(lesser == NULL)
+                {
+                    lesser = h;
+                    a = lesser;
+                }
+                else
+                {
+                    a->next = h;
+                    a = a->next;
+                }
+            }
+            else
+            {
+                if(greater == NULL)
+                {
+                    greater = h;
+                    b = greater;
+                }
+                else
+                {
+                    b->next = h;
+                    b = b->next;
+                }
+            }
+            h = h->next;
+        }
+        if(lesser == NULL)
+            return greater;
+        if(greater == NULL)
+            return lesser;
+        a->next = greater;
+        b->next = NULL;
+        return lesser;
+    }
+};
+
+Time Complexity: O(N)
+Space Complexity: O(1)
