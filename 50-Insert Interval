@@ -1,0 +1,63 @@
+class Solution {
+public:
+    vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
+        vector<vector<int>> ans;
+        if(intervals.size() == 0)
+        {
+            ans.push_back(newInterval);
+            return ans;
+        }
+        if(newInterval[1] < intervals[0][0])
+        {
+            ans.push_back(newInterval);
+            for(auto& i: intervals)
+                ans.push_back(i);
+            return ans;
+        }
+        if(newInterval[0] > intervals[intervals.size() - 1][1])
+        {
+            intervals.push_back(newInterval);
+            return intervals;
+        }
+        int n = intervals.size();
+
+        int s = newInterval[0];
+        int e = newInterval[1];
+        for(int i = 0; i < n; i++)
+        {
+          if(e < intervals[i][0])
+          {
+              ans.push_back({s,e});
+              s = intervals[i][0];
+              e = intervals[i][1];
+          }
+          else if(s <= intervals[i][0] && e >= intervals[i][0] && e <= intervals[i][1])
+          {
+              s = min(s,intervals[i][0]);
+              e = max(e,intervals[i][1]);
+          }
+          else if(s >= intervals[i][0] && s <= intervals[i][1] && e >= intervals[i][1])
+          {
+              s = min(s,intervals[i][0]);
+              e = max(e,intervals[i][1]);
+          }
+          else if(s >= intervals[i][1])
+          {
+              ans.push_back(intervals[i]);
+          }
+          else 
+          {
+              s = min(s,intervals[i][0]);
+              e = max(e,intervals[i][1]);
+          }
+        }
+        ans.push_back({s,e});
+
+        return ans;
+        
+    }
+};
+
+Time Complexity: O(N)
+Space Complexity: O(1)
+Note:: there are 5 cases.
