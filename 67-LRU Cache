@@ -1,0 +1,96 @@
+class LRUCache {
+public:
+    struct Node
+    {
+        int key;
+        int value;
+        Node* next;
+        Node* prev;
+        Node(int k, int v)
+        {
+            key = k;
+            value = v;
+            next = NULL;
+            prev = NULL;
+        }
+    };
+    unordered_map<int, Node*> m;
+    Node* head;
+    Node* tail;
+    int cap;
+    int c;
+    LRUCache(int capacity) {
+        cap = capacity;
+        head = new Node(-1,-1);
+        tail = new Node(-1,-1);
+        head->next = tail;
+        tail->prev = head;
+        c = 0;
+    }
+    void add(int key, int value)
+    {
+        Node* n = new Node(key, value);
+        Node* after_head = head->next;
+        head->next = n;
+        n->next = after_head;
+        n->prev = head;
+        after_head->prev = n;
+        m[key] = n;
+        c++;
+    }
+    void remove(int key)
+    {
+        Node* n = m[key];
+        Node* before_n = n->prev;
+        Node* after_n = n->next;
+        before_n->next = after_n;
+        after_n->prev = before_n;
+        m[key] = NULL;
+        c--;
+    }
+    
+    int get(int key) {
+        if(!m.count(key) || (m.count(key) && m[key] == NULL))
+            return -1;
+        int ans = m[key]->value;
+        remove(key);
+        add(key,ans);
+        return ans;
+    }
+    
+    void put(int key, int value) {
+       
+        if(c < cap)
+        {
+            if(!m.count(key) || (m.count(key) && m[key] == NULL))
+                add(key,value);
+            else
+            {
+                remove(key);  
+                add(key,value);
+            }
+        }
+        else
+        {
+            if(!m.count(key) || (m.count(key) && m[key] == NULL))
+            {
+                Node* prev_tail = tail->prev;
+                remove(prev_tail->key);
+                add(key,value);
+            }
+            else
+            {
+                remove(key);
+                add(key,value);
+            }
+        }
+       
+    }
+};
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache* obj = new LRUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
