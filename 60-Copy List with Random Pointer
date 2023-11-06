@@ -1,0 +1,65 @@
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+    Node* random;
+    
+    Node(int _val) {
+        val = _val;
+        next = NULL;
+        random = NULL;
+    }
+};
+*/
+
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        if(head == NULL)
+            return NULL;
+        Node* h = head;
+        //copy value and next
+        while(h != NULL)
+        {
+            Node* nextNode = h->next;
+            Node* copy = new Node(h->val);
+            h->next = copy;
+            copy->next = nextNode;
+            h = nextNode;
+        }
+        //copy random pointer
+        h = head;
+        while(h!= NULL)
+        {
+            Node* nextNode = h->next->next;
+            Node* copy = h->next;
+            if(h->random)
+                copy->random = h->random->next;
+            else
+                copy->random = NULL;
+            h = nextNode;
+        }
+        //Splitting two parts
+        h = head;
+        Node* ans = h->next;
+        Node* f = ans;
+        while(h != NULL)
+        {
+            Node* nextNode = h->next->next;
+            h->next = nextNode;
+            if(nextNode)
+                f->next = nextNode->next;
+            else
+                f->next = NULL;
+            h = nextNode;
+            f = f->next;
+        }
+        return ans;
+    
+    }
+};
+
+Time Complexity: O(N)
+Space Complexity: O(1)
