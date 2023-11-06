@@ -2,25 +2,7 @@ class Solution {
 public:
     vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
         vector<vector<int>> ans;
-        if(intervals.size() == 0)
-        {
-            ans.push_back(newInterval);
-            return ans;
-        }
-        if(newInterval[1] < intervals[0][0])
-        {
-            ans.push_back(newInterval);
-            for(auto& i: intervals)
-                ans.push_back(i);
-            return ans;
-        }
-        if(newInterval[0] > intervals[intervals.size() - 1][1])
-        {
-            intervals.push_back(newInterval);
-            return intervals;
-        }
         int n = intervals.size();
-
         int s = newInterval[0];
         int e = newInterval[1];
         for(int i = 0; i < n; i++)
