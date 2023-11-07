@@ -1,0 +1,42 @@
+class Solution {
+public:
+    struct Word
+    {
+        string w;
+        int c;
+        Word(string a, int b)
+        {
+            w = a;
+            c = b;
+        }
+    };
+    int ladderLength(string s, string e, vector<string>& wordList) {
+        unordered_map<string, bool> m;
+        for(auto& i : wordList)
+            m[i] = true;
+        unordered_map<string, bool> visited;
+        queue<Word> q;
+        q.push({s,1});
+        while(!q.empty())
+        {
+            auto f = q.front();
+            q.pop();
+            if(f.w == e)
+                return f.c;
+            for(int i = 0; i < f.w.size(); i++)
+            {
+                string a = f.w;
+                for(int j = 0; j < 26; j++)
+                {
+                    a[i] = 'a' + j;
+                    if(m.count(a) && !visited.count(a))
+                    {
+                        q.push({a,f.c+1});
+                        visited[a] = true;
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+};
