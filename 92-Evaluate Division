@@ -1,0 +1,45 @@
+class Solution {
+public:
+    void dfs(string start, string end, unordered_map<string, bool>& visited, unordered_map<string, vector<pair<string,double>>>& edge, double ans, double& f)
+    {
+        if(start == end)
+        {
+            f = ans;
+            return;
+        }
+        if(visited[start] == true)
+            return;
+        visited[start] = true;
+        for(int i = 0; i < edge[start].size(); i++)
+            dfs(edge[start][i].first, end, visited,edge,ans * edge[start][i].second, f);
+    }
+    vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
+        unordered_map<string, vector<pair<string,double>>> edge;
+        for(int i = 0; i < equations.size(); i++)
+        {
+            edge[equations[i][0]].push_back({equations[i][1],values[i]});
+            edge[equations[i][1]].push_back({equations[i][0],1.0/values[i]});
+        }
+        vector<double> ans;
+        for(int i = 0; i < queries.size(); i++)
+        {
+            unordered_map<string, bool> visited;
+            string start = queries[i][0];
+            string end = queries[i][1];
+            if(!edge.count(start) || !edge.count(end))
+            {
+                ans.push_back(-1.0);
+                continue;
+            }
+            if(start == end)
+            {
+                ans.push_back(1.0);
+                continue;
+            }
+            double a = -1.00;
+            dfs(start, end, visited, edge, 1.00, a);
+            ans.push_back(a);
+        }
+        return ans;
+    }
+};
