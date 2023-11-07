@@ -1,0 +1,42 @@
+class Solution {
+public:
+    struct Gene
+    {
+        string gene;
+        int c;
+        Gene(string a, int b)
+        {
+            gene = a;
+            c = b;
+        }
+    };
+    int minMutation(string s, string e, vector<string>& bank) {
+        unordered_map<string, bool> m;
+        queue<Gene> q;
+        q.push(Gene(s,0));
+        while(!q.empty())
+        {
+            auto f = q.front();
+            q.pop();
+            if(f.gene == e)
+                return f.c;
+            for(int i = 0; i < bank.size(); i++)
+            {
+                if(!m.count(bank[i]))
+                {
+                    int dif = 0;
+                    for(int j = 0; j < s.length(); j++)
+                        if(bank[i][j] != f.gene[j])
+                            dif++;
+                    if(dif == 1)
+                    {
+                        m[bank[i]] = true;
+                        q.push(Gene(bank[i], f.c + 1));
+                    }
+                }
+            }
+        }
+        return -1;
+
+    }
+};
