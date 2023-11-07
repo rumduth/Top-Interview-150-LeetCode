@@ -1,0 +1,67 @@
+class WordDictionary {
+public:
+    struct TrieNode
+    {
+        bool isTerminal;
+        vector<TrieNode*> next;
+        TrieNode()
+        {
+            isTerminal = false;
+            next.resize(26);
+            for(auto&i : next) i = NULL;
+        }
+    };
+    TrieNode* root;
+    WordDictionary() {
+        root = new TrieNode();
+    }
+    
+    void addWord(string word) {
+        TrieNode* r = root;
+        for(int i = 0; i < word.size(); i++)
+        {
+            if(r->next[word[i] - 'a'] == NULL)
+                r->next[word[i] - 'a'] = new TrieNode();
+            r = r->next[word[i] - 'a'];
+        }
+        r->isTerminal = true;
+    }
+    bool helper(string word, TrieNode* r)
+    {
+  
+        for(int i = 0; i < word.size(); i++)
+        {
+           if(word[i] != '.')
+           {
+                if(r->next[word[i]-'a'] == NULL)
+                    return false;
+                r = r->next[word[i] - 'a'];
+           }
+           else
+           {
+                for(int j = 0; j < 26; j++)
+                {
+                   if(r->next[j] != NULL)
+                   {
+                       bool a = helper(word.substr(i+1),r->next[j]);
+                       if(a == true)
+                            return true;
+                   }
+                }
+                return false;
+           }
+        }
+        return r->isTerminal;
+    }
+    bool search(string word) {
+        return helper(word, root);
+        
+    }
+};
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary* obj = new WordDictionary();
+ * obj->addWord(word);
+ * bool param_2 = obj->search(word);
+ */
