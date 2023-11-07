@@ -1,0 +1,72 @@
+class Solution {
+public:
+    struct Square
+    {
+        int i;
+        int j;
+        int n;
+        int step;
+        Square(int number, int row, int s)
+        {
+            n = number;
+            step = s;
+            convert(row);
+        }
+        void convert(int row)
+        {
+            i = row - 1 - (n - 1) / row;
+            int rem = n - (n-1) / row * row;
+            if( ((n-1) / row) % 2 == 0 )
+                j = rem - 1;
+            else
+                j = row - rem;
+        }
+    };
+    int snakesAndLadders(vector<vector<int>>& board) {
+        int n = board.size();
+        unordered_map<int, bool> visited;
+        queue<Square> q;
+        q.push(Square(1,n,0));
+        visited[1] = true;
+      
+        while(!q.empty())
+        {
+            auto f = q.front();
+            if(f.n == n * n)
+                return f.step;
+            q.pop();
+            for(int i = 1; i <= 6; i++)
+            {
+               if(f.n + i > n * n)
+                    continue;
+               Square s(f.n + i, n, f.step + 1);
+               if(!visited.count(s.n))
+               {
+                   visited[s.n] = true;
+                   if(board[s.i][s.j] != -1)
+                   {
+                    Square a(board[s.i][s.j], n, f.step + 1);
+                    q.push(a); 
+                   }
+                   else
+                        q.push(s);
+               }
+            }
+        }
+        return -1;
+
+
+    }
+};
+
+/*
+
+[-1,-1,-1,46,47,-1,-1,-1]
+[51,-1,-1,63,-1,31,21,-1]
+[-1,-1,26,-1,-1,38,-1,-1]
+[-1,-1,11,-1,14,23,56,57]
+[11,-1,-1,-1,49,36,-1,48]
+[-1,-1,-1,33,56,-1,57,21]
+[-1,-1,-1,-1,-1,-1,2,-1]
+[-1,-1,-1,8,3,-1,6,56]]
+*/
