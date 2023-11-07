@@ -1,0 +1,45 @@
+class Solution {
+public:
+    vector<int> findOrder(int n, vector<vector<int>>& p) {
+        //given an array: [a b] means b - > a
+        unordered_map<int, vector<int>> edge;
+        vector<int> degree(n, 0);
+        for(int i = 0; i < p.size(); i++)
+        {
+            edge[p[i][1]].push_back(p[i][0]);
+            degree[p[i][0]]++;
+        }
+        vector<bool> visited(n, false);
+        vector<int> ans;
+        queue<int> q;
+        for(int i = 0; i < n; i++)
+            if(degree[i] == 0)
+            {
+                q.push(i);
+                visited[i] = true;
+            }
+        while(!q.empty())
+        {
+            auto f = q.front();
+            ans.push_back(f);
+            q.pop();
+            for(int i = 0; i < edge[f].size(); i++)
+            {
+                if(visited[edge[f][i]] == false)
+                {
+                    degree[edge[f][i]]--;
+                    if(degree[edge[f][i]] == 0)
+                    {
+                        q.push(edge[f][i]);
+                        visited[edge[f][i]] = true;
+                    }
+                }
+            }
+        }
+        for(int i = 0; i < n; i++)
+            if(visited[i] == false)
+                return {};
+        return ans;
+
+    }
+};
