@@ -1,0 +1,72 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* mergeList(ListNode* l1, ListNode* l2)
+    {
+        if(l1 == NULL)
+            return l2;
+        if(l2 == NULL)
+            return l1;
+        ListNode* l;
+        if(l1->val < l2->val)
+        {
+            l = l1;
+            l->next = mergeList(l1->next,l2);
+        }
+        else
+        {
+            l = l2;
+            l->next = mergeList(l1,l2->next);
+        }
+        return l;
+    }
+    ListNode* divide(ListNode* head)
+    {
+        if(head == NULL || head->next == NULL)
+            return head;
+        
+        ListNode* dummy = new ListNode();
+        dummy->next = head;
+        ListNode* s = dummy;
+        ListNode* f = dummy->next;
+        while(f && f->next)
+        {
+            s = s->next;
+            f = f->next->next;
+        }
+        if(f == NULL)
+        {
+            ListNode* c = s->next;
+            s->next = NULL;
+            ListNode* a = divide(dummy->next);
+            ListNode* b = divide(c);
+            return mergeList(a,b);
+        }
+        else
+        {
+            s = s->next;
+            ListNode* c = s->next;
+            s->next = NULL;
+            ListNode* a = divide(dummy->next);
+            ListNode* b = divide(c);
+            return mergeList(a,b);
+        }
+
+        
+    }
+    ListNode* sortList(ListNode* head) {
+        if(head == NULL || head->next == NULL)
+            return head;
+        return divide(head);
+        
+    }
+};
