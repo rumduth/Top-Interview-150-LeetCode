@@ -1,0 +1,30 @@
+class Solution {
+public:
+    void backtracking(vector<vector<int>>& ans, vector<int>& v, int index, int n, vector<int>& nums)
+    {
+        if(v.size() == n)
+        {
+            ans.push_back(v);
+            return;
+        }
+        for(int i = index; i < n; i++)
+        {
+            v.push_back(nums[i]);
+            swap(nums[i], nums[index]);
+            backtracking(ans,v,index+1,n,nums);
+            swap(nums[i], nums[index]);
+            v.pop_back();
+        }
+    }
+    vector<vector<int>> permute(vector<int>& nums) {
+        int n = nums.size();
+        vector<vector<int>> ans;
+        vector<int> v;
+        backtracking(ans, v, 0, n, nums);
+        return ans;
+    }
+};
+
+/*
+
+*/
