@@ -1,0 +1,32 @@
+class Solution {
+public:
+    void helper(vector<vector<int>>& ans, vector<int>& v, int sum, int i, vector<int>& number, int target)
+    {
+        if(i == number.size())
+            return;
+        if(sum > target)
+            return;
+        if(sum == target)
+        {
+            ans.push_back(v);
+            return;
+        }
+        //Case 1
+        v.push_back(number[i]);
+        helper(ans, v, sum + number[i], i, number, target);
+        v.pop_back();
+
+        //Case 2
+        helper(ans, v, sum , i + 1, number, target);
+        
+
+      
+    }
+    vector<vector<int>> combinationSum(vector<int>& c, int t) {
+        vector<vector<int>> ans;
+        vector<int> v;
+        int sum = 0;
+        helper(ans, v, sum, 0, c, t);
+        return ans;
+    }
+};
