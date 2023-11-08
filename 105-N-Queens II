@@ -1,0 +1,35 @@
+class Solution {
+public:
+    void helper(int& ans, int r, unordered_map<int,bool>& col, unordered_map<int,bool>& d, 
+    unordered_map<int,bool>& nd,int n)
+    {
+        if(r == n)
+        {
+            ans++;
+            return;
+        }
+        for(int j = 0; j < n; j++)
+        {
+            if(col[j] == false && d[j + r] == false && nd[j-r] == false)
+            {
+                col[j] = true;
+                d[j+r] = true;
+                nd[j-r] = true;
+                helper(ans, r+1, col, d, nd,n);
+                col[j] = false;
+                d[j+r] = false;
+                nd[j-r] = false;
+            }   
+        }
+        
+    }
+    int totalNQueens(int n) {
+
+        unordered_map<int, bool> col;
+        unordered_map<int, bool> posdiag;
+        unordered_map<int, bool> negdiag;
+        int ans = 0;
+        helper(ans, 0, col, posdiag, negdiag, n);
+        return ans;
+    }
+};
