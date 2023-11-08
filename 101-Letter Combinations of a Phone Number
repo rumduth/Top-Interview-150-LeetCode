@@ -1,0 +1,50 @@
+class Solution {
+public:
+    void helper(unordered_map<char, vector<char>>& m)
+    {
+        char a = 'a';
+        for(char x = '2'; x <= '9'; x++)
+        {
+            if(x == '7' || x == '9')
+            {
+                for(int i = 0; i < 4; i++)
+                {
+                    m[x].push_back(a);
+                    a++;
+                }
+            }
+            else
+            {
+                for(int i = 0; i < 3; i++)
+                {
+                    m[x].push_back(a);
+                    a++;
+                }
+            }
+        }
+    }
+    void backtracking(vector<string>& ans, string& temp, string digits, int index, unordered_map<char,vector<char>>& m)
+    {
+        if(temp.size() == digits.size())
+        {
+            ans.push_back(temp);
+            return;
+        }
+        for(int i = 0; i < m[digits[index]].size(); i++)
+        {
+            temp.push_back(m[digits[index]][i]);
+            backtracking(ans,temp,digits,index+1, m);
+            temp.pop_back();
+        }
+    }
+    vector<string> letterCombinations(string digits) {
+        if(digits.size() == 0)
+            return {};
+        unordered_map<char, vector<char>> m;
+        helper(m);
+        vector<string> ans;
+        string t = "";
+        backtracking(ans, t, digits, 0, m);
+        return ans;
+    }
+};
