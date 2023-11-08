@@ -1,0 +1,93 @@
+/*
+// Definition for a QuadTree node.
+class Node {
+public:
+    bool val;
+    bool isLeaf;
+    Node* topLeft;
+    Node* topRight;
+    Node* bottomLeft;
+    Node* bottomRight;
+    
+    Node() {
+        val = false;
+        isLeaf = false;
+        topLeft = NULL;
+        topRight = NULL;
+        bottomLeft = NULL;
+        bottomRight = NULL;
+    }
+    
+    Node(bool _val, bool _isLeaf) {
+        val = _val;
+        isLeaf = _isLeaf;
+        topLeft = NULL;
+        topRight = NULL;
+        bottomLeft = NULL;
+        bottomRight = NULL;
+    }
+    
+    Node(bool _val, bool _isLeaf, Node* _topLeft, Node* _topRight, Node* _bottomLeft, Node* _bottomRight) {
+        val = _val;
+        isLeaf = _isLeaf;
+        topLeft = _topLeft;
+        topRight = _topRight;
+        bottomLeft = _bottomLeft;
+        bottomRight = _bottomRight;
+    }
+};
+*/
+
+class Solution {
+public:
+    Node* helper(vector<vector<int>>& grid, int f_r, int l_r, int f_c, int l_c)
+    {
+        if(f_r == l_r && f_c == l_c)
+        {
+            if(grid[f_r][f_c] == 1)
+                return new Node(1,true);
+            else
+                return new Node(0,true);
+        }
+        if(f_r + 1 == l_r && f_c + 1 == l_c)
+        {
+            Node* topLeft = helper(grid,f_r,f_r,f_c,f_c);
+            Node* topRight = helper(grid,f_r,f_r,l_c, l_c);
+            Node* bottomLeft= helper(grid,l_r,l_r,f_c,f_c);
+            Node* bottomRight= helper(grid,l_r,l_r,l_c,l_c);
+            if(topLeft->isLeaf && topRight->isLeaf && bottomLeft->isLeaf && bottomRight->isLeaf)
+            {
+                if(topLeft->val == 1 && topRight->val == 1 && bottomLeft->val == 1 && bottomRight->val == 1)
+                    return new Node(1, true);
+                else if(topLeft->val == 0 && topRight->val == 0 && bottomLeft->val == 0 && bottomRight->val == 0)
+                    return new Node(0, true);
+                else
+                    return new Node(0, false,topLeft, topRight, bottomLeft, bottomRight);
+            }
+            else
+                return new Node(0, false,topLeft, topRight, bottomLeft, bottomRight);
+        }
+        int dif_r = ((l_r - f_r) + 1)/2;
+        int dif_c = ((l_c - f_c) + 1)/2;
+        Node* topLeft =  helper(grid,f_r, f_r + dif_r - 1, f_c, f_c + dif_c - 1);
+        Node* topRight = helper(grid,f_r, f_r + dif_r - 1, f_c + dif_c, l_c);
+        Node* bottomLeft = helper(grid, f_r + dif_r, l_r, f_c, f_c + dif_c - 1);
+        Node* bottomRight = helper(grid, f_r + dif_r, l_r, f_c + dif_c, l_c);
+        if(topLeft->isLeaf && topRight->isLeaf && bottomLeft->isLeaf && bottomRight->isLeaf)
+        {
+            if(topLeft->val == 1 && topRight->val == 1 && bottomLeft->val == 1 && bottomRight->val == 1)
+                    return new Node(1, true);
+            if(topLeft->val == 0 && topRight->val == 0 && bottomLeft->val == 0 && bottomRight->val == 0)
+                    return new Node(0, true);
+            else
+                    return new Node(0, false,topLeft, topRight, bottomLeft, bottomRight);
+        }
+
+        return new Node(0, false,topLeft, topRight, bottomLeft, bottomRight);
+
+    }
+    Node* construct(vector<vector<int>>& grid) {
+        int n = grid.size();
+        return helper(grid, 0, n-1, 0, n-1);
+    }
+};
