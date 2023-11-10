@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int maxPoints(vector<vector<int>>& p) {
+        if(p.size() == 0 || p.size() == 1)
+            return p.size();;
+        unordered_map<double, int> m;
+        int ans = INT_MIN;
+        for(int i = 0; i < p.size()-1; i++)
+        {
+            for(int j = i+1; j < p.size(); j++)
+            {
+                double slope = 1.00*(p[j][1] - p[i][1])/(p[j][0]-p[i][0]);
+                if(p[j][0] - p[i][0] == 0)
+                {
+                    m[INT_MAX]++;
+                    ans = max(m[INT_MAX],ans);
+                }
+                else
+                {
+                    m[slope]++;
+                    ans = max(m[slope],ans);
+                }
+            }
+            m.clear();
+        }
+        return (ans + 1);
+
+    }
+};
