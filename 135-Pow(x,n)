@@ -1,0 +1,74 @@
+First Solution: Space Complexity is not optimized.
+class Solution {
+public:
+    unordered_map<int, double> m;
+    double myPow(double x, int n) {
+ 
+        if(x == 0)
+            return 0;
+        if(n == 0)
+            return 1;
+        if(n == 1)
+            return x;
+        if(x == 1)
+            return 1;
+        bool c = false;
+        if(n == INT_MIN)
+        {
+            n = n + 1;
+            c = true;
+        }
+        if(n < 0)
+        {
+            n = -n;
+            x = 1/x;
+        }
+        if(m.count(x))
+            return m[x];
+        double ans;
+        if(n % 2 == 0)
+            ans = myPow(x,n/2) * myPow(x,n/2);
+        else
+            ans = x * myPow(x,(n-1)/2) * myPow(x,(n-1)/2);
+        m[x] = ans;
+        if(c == true) ans *= x;
+        return ans;
+        
+    }
+};
+
+Second Solution: Optimized Space Complexity
+class Solution {
+public:
+    double myPow(double x, int n) {
+ 
+        if(x == 0)
+            return 0;
+        if(n == 0)
+            return 1;
+        if(n == 1)
+            return x;
+        if(x == 1)
+            return 1;
+       
+        if(n < 0)
+        {
+            n = abs(n);
+            x = 1/x;
+        }
+       
+        double ans;
+        if(n % 2 == 0)
+        {
+            ans = myPow(x,n/2); 
+            return ans * ans;
+        }
+        else
+        {
+            ans =  myPow(x,(n-1)/2);
+            return x * ans * ans;
+        }
+        
+        
+    }
+};
