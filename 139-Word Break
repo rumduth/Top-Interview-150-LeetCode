@@ -1,0 +1,35 @@
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        int n = s.size();
+        vector<bool> dp(n+1,false);
+        
+        //getting initinial conditions
+        bool found_beginning = false;
+        for(auto& i : wordDict)
+            if(s.find(i) == 0)
+            {
+                found_beginning = true;
+                dp[0] = true;
+                dp[i.size()] = true;
+            }
+        if(found_beginning == false)
+            return false;
+        for(int i = 1; i < s.size(); i++)
+        {
+            if(dp[i] == true)
+            {
+                for(auto& j : wordDict)
+                {
+                    if(s.find(j,i) == i)
+                    {
+                        if(i + j.size() >= n+1)
+                            continue;
+                        dp[i+j.size()] = true;
+                    }
+                }
+            }
+        }
+        return dp[n];
+    }
+};
