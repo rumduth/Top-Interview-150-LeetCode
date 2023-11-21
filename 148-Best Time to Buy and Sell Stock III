@@ -1,0 +1,47 @@
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int n = prices.size();
+        vector<int> left(n,0);
+        vector<int> right(n,0);
+
+        left[0] = 0;
+        int first_transaction = 0;
+        int first_buying_point = prices[0];
+        for(int i = 1; i < n; i++)
+        {
+            if(first_buying_point > prices[i])
+            {
+                first_buying_point = prices[i];
+                left[i] = left[i-1];
+            }
+            else
+            {
+                first_transaction = max(first_transaction, prices[i] - first_buying_point);
+                left[i] = first_transaction;
+            } 
+        }
+        int second_transaction = 0;
+        right[n-1] = 0;
+        int second_selling_point = prices[n-1];
+        for(int i = n-2; i >= 0; i--)
+        {
+            if(prices[i] > second_selling_point)
+            {
+                second_selling_point = prices[i];
+                right[i] = right[i+1];
+            }
+            else
+            {
+                second_transaction = max(second_transaction, second_selling_point-prices[i]);
+                right[i] = second_transaction;
+            }
+        }
+        int ans = 0;
+      
+        for(int i = 0; i < n ; i++)
+            ans = max(ans,left[i] + right[i]);
+        return ans;
+
+    }
+};
